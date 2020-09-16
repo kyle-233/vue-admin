@@ -94,8 +94,11 @@ button {
   color: white;
   margin-top: 20px;
   margin-bottom: 40px;
+  padding: 0;
 
   outline: none;
+
+  cursor: pointer;
 }
 
 a {
@@ -161,12 +164,12 @@ a {
   color: rgba(0, 0, 0, 0.3);
 }
 
-.light-box{
+.light-box {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.dark-box{
+.dark-box {
   background: rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(0, 0, 0, 0.1);
 }

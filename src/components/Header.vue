@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-09-13 16:47:49
+ * @LastEditTime: 2020-09-16 08:34:04
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \vue-admin\src\components\Header.vue
+-->
 <template>
   <div id="nav" :class="{'nav-light' : !isDarkMode, 'nav-dark' : isDarkMode}">
     <div class="nav-1">
@@ -5,7 +13,7 @@
       <router-link to="/manage">Manage Users</router-link>
       <router-link to="/about">About</router-link>
     </div>
-    <a @click="onClick">
+    <a @click="logOut">
       Logout
       <img src="@/assets/logout.svg" />
     </a>
@@ -16,13 +24,28 @@
 export default {
   name: "Header",
   computed: {
-    isDarkMode(){
-      return this.$store.getters.isDarkMode
+    isDarkMode() {
+      return this.$store.getters.isDarkMode;
     }
   },
   methods: {
-    onClick() {
-      this.$router.replace("/signin");
+    logOut() {
+      console.log("11111111");
+      // sessionStorage.setItem("accessToken", "");
+      this.$axios({
+        method: "post",
+        url: "/logout"
+      }).then(res => {
+        this.$router.push({
+          name: "SignIn",
+          path: "/signin",
+          params: {
+            userLoggedOut: true
+          }
+        });
+        // console.log("storage: " + res.data.storage);
+        sessionStorage.setItem("accessToken", res.data.storage);
+      });
     }
   }
 };
@@ -32,11 +55,11 @@ export default {
 @import "@/global-styles/colors.scss";
 @import "@/global-styles/typography.scss";
 
-.nav-light{
+.nav-light {
   background: $white;
 }
 
-.nav-dark{
+.nav-dark {
   background: $super-dark-blue;
 }
 
@@ -61,11 +84,11 @@ export default {
       cursor: pointer;
     }
 
-    &.router-link-exact-active.dark-nav{
+    &.router-link-exact-active.dark-nav {
       color: $white;
     }
 
-    &.router-link-exact-active.light-nav{
+    &.router-link-exact-active.light-nav {
       color: $middle-blue;
     }
   }
@@ -75,15 +98,13 @@ export default {
   }
 }
 
-.nav-1{
+.nav-1 {
   display: flex;
   align-items: center;
 
-  a{
+  a {
     margin-left: 20px;
     margin-right: 20px;
   }
 }
-
-
 </style>

@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-09-13 16:47:49
+ * @LastEditTime: 2020-09-15 19:48:33
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \vue-admin\src\router\index.js
+ */
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
@@ -5,18 +13,22 @@ import Team from "../views/Team.vue";
 import SignIn from "../views/SignInFlow/SignIn";
 import Request from "../views/SignInFlow/Request";
 import Recover from "../views/SignInFlow/Recover";
-import * as netlifyIdentityWidget from "netlify-identity-widget";
+// import * as netlifyIdentityWidget from "netlify-identity-widget";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
+    redirect: "/home",
+  },
+  {
+    path: "/home",
     name: "Home",
     component: Home,
-    // meta: {
-    //   requiresAuth: true
-    // }
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: "/team",
@@ -29,17 +41,26 @@ const routes = [
   {
     path: "/signin",
     name: "SignIn",
-    component: SignIn
+    component: SignIn,
+    meta: {
+      requiresAuth: false
+    }
   },
   {
     path: "/request",
     name: "Request",
-    component: Request
+    component: Request,
+    meta: {
+      requiresAuth: false
+    }
   },
   {
     path: "/recover",
     name: "Recover",
-    component: Recover
+    component: Recover,
+    meta: {
+      requiresAuth: false
+    }
   }
 ];
 
@@ -50,15 +71,16 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const currentUser = netlifyIdentityWidget.currentUser();
-  const requiresAuth = to.matched.some(record => {
-    return record.meta.requiresAuth
-  })
-
-  if(requiresAuth && !currentUser) {
-    next("signin");
-  }else{
+  if (to.path === '/signin') {
     next();
+  } else {
+    if (!sessionStorage.getItem('accessToken') && to.meta.requiresAuth) {
+      next({
+        path: '/signin'
+      })
+    } else {
+      next();
+    }
   }
 })
 

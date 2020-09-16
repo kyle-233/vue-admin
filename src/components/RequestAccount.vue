@@ -1,5 +1,6 @@
 <template>
-    <transition name="slide-in-right" enter-active-class="animate__animated animate__slideInRight">
+    <!-- <transition name="slide-in-right" enter-active-class="animate__animated animate__slideInRight">   -->
+    <transition>
             <div v-if="show" class="request" :class="{'light-request' : isDarkMode, 'dark-request' : !isDarkMode}">Don't have a Design+Code HQ account? 
                 <router-link to="/request">Request an account</router-link>
             </div>
